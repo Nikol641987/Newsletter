@@ -1,53 +1,104 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <title>Odhlásenie e-mailu</title>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <meta charset="UTF-8" />
+  <title>Odstránenie e-mailovej adresy</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
   <script>
     (function() {
-      emailjs.init("tvoj_user_id"); // <-- sem vlož svoj "Public Key" (z EmailJS dashboardu)
+      emailjs.init("fOr2_LnrDOu5vIdR7"); // Tvoj Public Key z EmailJS
     })();
   </script>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 30px;
+      background-color: #f0f0f0;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     #message {
       margin-top: 20px;
-      color: green;
       font-weight: bold;
+    }
+    #message.success {
+      color: green;
+    }
+    #message.error {
+      color: red;
     }
   </style>
 </head>
 <body>
 
-  <h2>Odstránenie e-mailu z databázy</h2>
+  <h2>Odstránenie e-mailovej adresy z databázy</h2>
 
-  <form id="unsubscribeForm">
-    <label for="email">Zadajte e-mail:</label><br>
-    <input type="email" id="email" name="email" required>
+  <form id="unsubscribe-form">
+    <label for="email">Zadajte svoju e-mailovú adresu:</label>
+    <input type="email" id="email" name="email" required placeholder="napr. meno@priklad.sk" />
     <button type="submit">Odstrániť</button>
   </form>
 
   <div id="message"></div>
 
   <script>
-    document.getElementById("unsubscribeForm").addEventListener("submit", function(event) {
+    document.getElementById('unsubscribe-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
-      const userEmail = document.getElementById("email").value;
+      const emailValue = document.getElementById('email').value.trim();
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = '';
 
-      emailjs.send("service_m5qobzc", "template_odstranit", {
-        odoslany_email: userEmail,
-        prijemca: "nikol.lukacova@miticka.eu"
-      }).then(function(response) {
-        document.getElementById("message").textContent = "Vaša mailová adresa bola odstránená z databázy.";
-        document.getElementById("unsubscribeForm").reset();
+      if (!emailValue) {
+        messageDiv.textContent = 'Prosím, zadajte platnú e-mailovú adresu.';
+        messageDiv.className = 'error';
+        return;
+      }
+
+      emailjs.send('service_m5qobzc', 'template_odstranit', {
+        odoslany_email: emailValue,
+        prijemca: 'nikola.lukacova@miticka.eu'
+      })
+      .then(function(response) {
+        messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
+        messageDiv.className = 'success';
+        document.getElementById('unsubscribe-form').reset();
       }, function(error) {
-        document.getElementById("message").textContent = "Chyba pri odosielaní e-mailu.";
-        console.error(error);
+        console.error('Chyba EmailJS:', error);
+        messageDiv.textContent = 'Nastala chyba pri odosielaní e-mailu. Skúste to, prosím, neskôr.';
+        messageDiv.className = 'error';
       });
     });
   </script>
