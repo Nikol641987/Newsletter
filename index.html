@@ -2,24 +2,55 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <title>Odhlásenie</title>
+  <title>Odhlásenie e-mailu</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("tvoj_user_id"); // <-- sem vlož svoj "Public Key" (z EmailJS dashboardu)
+    })();
+  </script>
   <style>
-    .message {
-      font-size: 20px;
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    #message {
+      margin-top: 20px;
       color: green;
-      margin-top: 50px;
-      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-<div id="output" class="message"></div>
+  <h2>Odstránenie e-mailu z databázy</h2>
 
-<script>
-  // Zobrazenie správy
-  document.getElementById("output").textContent = "Vaša mailová adresa bola odstránená z databázy";
-</script>
+  <form id="unsubscribeForm">
+    <label for="email">Zadajte e-mail:</label><br>
+    <input type="email" id="email" name="email" required>
+    <button type="submit">Odstrániť</button>
+  </form>
+
+  <div id="message"></div>
+
+  <script>
+    document.getElementById("unsubscribeForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const userEmail = document.getElementById("email").value;
+
+      emailjs.send("service_m5qobzc", "template_odstranit", {
+        odoslany_email: userEmail,
+        prijemca: "nikol.lukacova@miticka.eu"
+      }).then(function(response) {
+        document.getElementById("message").textContent = "Vaša mailová adresa bola odstránená z databázy.";
+        document.getElementById("unsubscribeForm").reset();
+      }, function(error) {
+        document.getElementById("message").textContent = "Chyba pri odosielaní e-mailu.";
+        console.error(error);
+      });
+    });
+  </script>
 
 </body>
 </html>
