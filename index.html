@@ -54,19 +54,20 @@
       }
 
       // Poslanie emailu cez EmailJS s použitím template_15balek
-      emailjs.send('service_m5qobzc', 'template_15balek', {
-        odoslany_email: emailValue,
-        prijemca: 'nikola.lukacova@miticka.eu'
-      })
-      .then(function(response) {
-        console.log('Email odoslaný', response);
-        messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
-        messageDiv.className = 'success';
-        document.getElementById('unsubscribe-form').reset();
-      }, function(error) {
-        console.error('Chyba EmailJS:', error);
-        messageDiv.textContent = 'Nastala chyba pri odosielaní e-mailu. Skúste to, prosím, neskôr.';
-        messageDiv.className = 'error';
+     emailjs.send('service_m5qobzc', 'template_15balek', {
+  odoslany_email: emailValue,
+  prijemca: 'nikola.lukacova@miticka.eu'
+})
+.then(function(response) {
+  console.log('Email odoslaný:', response.status, response.text);
+  messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
+  messageDiv.className = 'success';
+})
+.catch(function(error) {
+  console.error('Chyba EmailJS:', error);
+  messageDiv.textContent = `Nastala chyba: ${error.text || 'Skúste to, prosím, neskôr.'}`;
+  messageDiv.className = 'error';
+  
       });
     });
   </script>
