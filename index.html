@@ -7,7 +7,9 @@
   <!-- Nová verzia EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
-    emailjs.init("fOr2_LnrDOu5vIdR7"); // Tvoj Public Key z EmailJS
+    // FIX: Prístup k default exportu
+    emailjs = emailjs.default;
+    emailjs.init("fOr2_LnrDOu5vIdR7");
   </script>
 
   <style>
