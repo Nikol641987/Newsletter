@@ -4,12 +4,10 @@
   <meta charset="UTF-8" />
   <title>Odstránenie e-mailovej adresy</title>
 
-  <!-- EmailJS knižnica -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <!-- Nová verzia EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
-    (function() {
-      emailjs.init("fOr2_LnrDOu5vIdR7"); // Tvoj Public Key z EmailJS
-    })();
+    emailjs.init("fOr2_LnrDOu5vIdR7"); // Tvoj Public Key z EmailJS
   </script>
 
   <style>
@@ -53,25 +51,22 @@
         return;
       }
 
-      // Poslanie emailu cez EmailJS s použitím template_15balek
-     emailjs.send('service_m5qobzc', 'template_15balek', {
-  odoslany_email: emailValue,
-  prijemca: 'nikola.lukacova@miticka.eu'
-})
-.then(function(response) {
-  console.log('Email odoslaný:', response.status, response.text);
-  messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
-  messageDiv.className = 'success';
-})
-.catch(function(error) {
-  console.error('Chyba EmailJS:', error);
-  messageDiv.textContent = `Nastala chyba: ${error.text || 'Skúste to, prosím, neskôr.'}`;
-  messageDiv.className = 'error';
-  
+      emailjs.send('service_m5qobzc', 'template_15balek', {
+        odoslany_email: emailValue,
+        prijemca: 'nikola.lukacova@miticka.eu'
+      })
+      .then(function(response) {
+        console.log('Email odoslaný:', response.status, response.text);
+        messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
+        messageDiv.className = 'success';
+      })
+      .catch(function(error) {
+        console.error('Chyba EmailJS:', error);
+        messageDiv.textContent = `Nastala chyba: ${error.text || 'Skúste to, prosím, neskôr.'}`;
+        messageDiv.className = 'error';
       });
     });
   </script>
 
 </body>
 </html>
-
