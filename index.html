@@ -3,71 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <title>Odstránenie e-mailovej adresy</title>
+
+  <!-- EmailJS knižnica -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
   <script>
     (function() {
       emailjs.init("fOr2_LnrDOu5vIdR7"); // Tvoj Public Key z EmailJS
     })();
   </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f0f0f0;
+      padding: 2rem;
     }
-    form {
-      background: #fff;
-      padding: 20px;
-      max-width: 400px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1em;
-    }
-    button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      font-weight: bold;
-      font-size: 1em;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #message {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    #message.success {
+    .success {
       color: green;
+      margin-top: 1rem;
     }
-    #message.error {
+    .error {
       color: red;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
 
-  <h2>Odstránenie e-mailovej adresy z databázy</h2>
+  <h1>Odstránenie e-mailovej adresy z databázy</h1>
 
   <form id="unsubscribe-form">
-    <label for="email">Zadajte svoju e-mailovú adresu:</label>
-    <input type="email" id="email" name="email" required placeholder="napr. meno@priklad.sk" />
+    <label for="email">Zadajte svoju e-mailovú adresu:</label><br>
+    <input type="email" id="email" name="email" required />
     <button type="submit">Odstrániť</button>
   </form>
 
@@ -87,11 +53,13 @@
         return;
       }
 
+      // Poslanie emailu cez EmailJS
       emailjs.send('service_m5qobzc', 'template_odstranit', {
         odoslany_email: emailValue,
         prijemca: 'nikola.lukacova@miticka.eu'
       })
       .then(function(response) {
+        console.log('Email odoslaný', response);
         messageDiv.textContent = 'Vaša mailová adresa bola odstránená z databázy.';
         messageDiv.className = 'success';
         document.getElementById('unsubscribe-form').reset();
